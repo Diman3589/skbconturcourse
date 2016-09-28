@@ -247,3 +247,6 @@ ModelManifest.xml
 /Triangle/Triangle/App.config
 /Triangle/Triangle/Triangle.csproj
 /Triangle/Triangle.sln
+/Triangle/Triangle.Tests/Properties/AssemblyInfo.cs
+/Triangle/Triangle.Tests/Triangle.Tests.csproj
+/Triangle/Triangle.Tests/TriangleTests.csproj
