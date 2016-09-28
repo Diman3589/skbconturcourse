@@ -243,3 +243,7 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/Triangle/Triangle/Properties/AssemblyInfo.cs
+/Triangle/Triangle/App.config
+/Triangle/Triangle/Triangle.csproj
+/Triangle/Triangle.sln
