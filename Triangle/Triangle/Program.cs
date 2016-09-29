@@ -49,18 +49,15 @@ namespace Program
         private readonly double _sideA;
         private readonly double _sideB;
         private readonly double _sideC;
-        private readonly double _angleOne;
-        private readonly double _angleTwo;
-        private double _angleThree;
 
         public Triangle(ThreeSides obj)
         {
             _sideA = obj.SideA;
             _sideB = obj.SideB;
             _sideC = obj.SideC;
-            if (!CheckSide(ref _sideA) || !CheckSide(ref _sideB) || !CheckSide(ref _sideC))
+            if (!CheckSide(_sideA) || !CheckSide(_sideB) || !CheckSide(_sideC))
             {
-                throw new ArgumentException("Not valid side!");
+                throw new ArgumentException("Invalid side!");
             }
         }
 
@@ -68,41 +65,41 @@ namespace Program
         {
             _sideA = obj.SideA;
             _sideB = obj.SideB;
-            if (!CheckSide(ref _sideA) || !CheckSide(ref _sideB))
+            if (!CheckSide(_sideA) || !CheckSide(_sideB))
             {
-                throw new ArgumentException("Not valid side!");
+                throw new ArgumentException("Invalid side!");
             }
 
-            _angleOne = obj.Angle;
-            if (CheckAngle(new[] {_angleOne}))
+            var angleOne = obj.Angle;
+            if (CheckAngle(new[] {angleOne}))
             {
-                _sideC = Math.Sqrt(Math.Pow(_sideA, 2) + Math.Pow(_sideB, 2) - 2*_sideA*_sideB*Math.Cos(ToRadian(_angleOne)));
+                _sideC = Math.Sqrt(Math.Pow(_sideA, 2) + Math.Pow(_sideB, 2) - 2*_sideA*_sideB*Math.Cos(ToRadian(angleOne)));
             }
             else
             {
-                throw new ArgumentException("Not valid angle!");
+                throw new ArgumentException("Invalid angle!");
             }
         }
 
         public Triangle(OneSideAndTwoAngles obj)
         {
             _sideC = obj.Side;
-            if (!CheckSide(ref _sideC))
+            if (!CheckSide(_sideC))
             {
-                throw new ArgumentException("Not valid side!");
+                throw new ArgumentException("Invalid side!");
             }
 
-            _angleOne = obj.AngleOne;
-            _angleTwo = obj.AngleTwo;
-            if (CheckAngle(new[] {_angleOne, _angleTwo}))
+            var angleOne = obj.AngleOne;
+            var angleTwo = obj.AngleTwo;
+            if (CheckAngle(new[] {angleOne, angleTwo}))
             {
-                _angleThree = 180 - (_angleOne + _angleTwo);
-                _sideA = _sideC*Math.Sin(ToRadian(_angleOne))/Math.Sin(ToRadian(_angleThree));
-                _sideB = _sideC*Math.Sin(ToRadian(_angleTwo))/Math.Sin(ToRadian(_angleThree));
+                var angleThree = 180 - (angleOne + angleTwo);
+                _sideA = _sideC*Math.Sin(ToRadian(angleOne))/Math.Sin(ToRadian(angleThree));
+                _sideB = _sideC*Math.Sin(ToRadian(angleTwo))/Math.Sin(ToRadian(angleThree));
             }
             else
             {
-                throw new ArgumentException("Not valid angle!");
+                throw new ArgumentException("Invalid angle!");
             }
         }
 
@@ -112,27 +109,24 @@ namespace Program
 
             foreach (var angle in angles)
             {
-                if (angle > 0 && angle < 180) sumAngles += angle;
+                if (angle > 0 && angle < 180)
+                    sumAngles += angle;
                 else return false;
             }
             return sumAngles < 180;
         }
 
-        public bool CheckSide(ref double side)
+        public bool CheckSide(double side)
         {
             return side > 0;
         }
 
-        private double ToRadian(double degrees)
-        {
-            return degrees*Math.PI/180;
-        }
+        private double ToRadian(double degrees) => degrees*Math.PI/180;
 
         public double CalculateArea()
         {
             var p = (_sideA + _sideB + _sideC)/2;
-            var area = Math.Sqrt(p*(p - _sideA)*(p - _sideB)*(p - _sideC));
-            return area;
+            return Math.Sqrt(p*(p - _sideA)*(p - _sideB)*(p - _sideC));
         }
 
         static void Main(string[] args)
