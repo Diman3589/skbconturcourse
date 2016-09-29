@@ -2,108 +2,81 @@
 
 namespace Program
 {
-    public struct ThreeSides
-    {
-        public double SideA;
-        public double SideB;
-        public double SideC;
-
-        public ThreeSides(double a, double b, double c)
-        {
-            SideA = a;
-            SideB = b;
-            SideC = c;
-        }
-    }
-
-    public struct TwoSidesAndAngle
-    {
-        public double SideA;
-        public double SideB;
-        public double Angle;
-
-        public TwoSidesAndAngle(double a, double b, double angle)
-        {
-            SideA = a;
-            SideB = b;
-            Angle = angle;
-        }
-    }
-
-    public struct OneSideAndTwoAngles
-    {
-        public double Side;
-        public double AngleOne;
-        public double AngleTwo;
-
-        public OneSideAndTwoAngles(double a, double angleOne, double angleTwo)
-        {
-            Side = a;
-            AngleOne = angleOne;
-            AngleTwo = angleTwo;
-        }
-    }
 
     public class Triangle
     {
-        private readonly double _sideA;
-        private readonly double _sideB;
-        private readonly double _sideC;
+        private double _sideA;
+        private double _sideB;
+        private double _sideC;
 
-        public Triangle(ThreeSides obj)
+        private Triangle()
         {
-            _sideA = obj.SideA;
-            _sideB = obj.SideB;
-            _sideC = obj.SideC;
-            if (!CheckSide(_sideA) || !CheckSide(_sideB) || !CheckSide(_sideC))
-            {
-                throw new ArgumentException("Invalid side!");
-            }
         }
 
-        public Triangle(TwoSidesAndAngle obj)
+        public static Triangle ThreeSides(double sideA, double sideB, double sideC)
         {
-            _sideA = obj.SideA;
-            _sideB = obj.SideB;
-            if (!CheckSide(_sideA) || !CheckSide(_sideB))
+            var obj = new Triangle
+            {
+                _sideA = sideA,
+                _sideB = sideB,
+                _sideC = sideC
+            };
+
+            if (!CheckSide(obj._sideA) || !CheckSide(sideB) || !CheckSide(sideC))
             {
                 throw new ArgumentException("Invalid side!");
             }
 
-            var angleOne = obj.Angle;
-            if (CheckAngle(new[] {angleOne}))
+            return obj;
+        }
+
+        public static Triangle TwoSidesAndAngle(double sideA, double sideB, double angle)
+        {
+            var obj = new Triangle();
+            if (!CheckSide(sideA) || !CheckSide(sideB))
             {
-                _sideC = Math.Sqrt(Math.Pow(_sideA, 2) + Math.Pow(_sideB, 2) - 2*_sideA*_sideB*Math.Cos(ToRadian(angleOne)));
+                throw new ArgumentException("Invalid side!");
+            }
+
+            if (CheckAngle(new[] {angle}))
+            {
+                obj._sideA = sideA;
+                obj._sideB = sideB;
+                obj._sideC =
+                    Math.Sqrt(Math.Pow(sideA, 2) + Math.Pow(sideB, 2) -
+                              2*sideA*sideB*Math.Cos(ToRadian(angle)));
             }
             else
             {
                 throw new ArgumentException("Invalid angle!");
             }
+            return obj;
         }
 
-        public Triangle(OneSideAndTwoAngles obj)
+        public static Triangle OneSideAndTwoAngles(double sideC, double angleOne, double angleTwo)
         {
-            _sideC = obj.Side;
-            if (!CheckSide(_sideC))
+            var obj = new Triangle();
+
+            if (!CheckSide(sideC))
             {
                 throw new ArgumentException("Invalid side!");
             }
 
-            var angleOne = obj.AngleOne;
-            var angleTwo = obj.AngleTwo;
             if (CheckAngle(new[] {angleOne, angleTwo}))
             {
+                obj._sideC = sideC;
                 var angleThree = 180 - (angleOne + angleTwo);
-                _sideA = _sideC*Math.Sin(ToRadian(angleOne))/Math.Sin(ToRadian(angleThree));
-                _sideB = _sideC*Math.Sin(ToRadian(angleTwo))/Math.Sin(ToRadian(angleThree));
+                obj._sideA = sideC*Math.Sin(ToRadian(angleOne))/Math.Sin(ToRadian(angleThree));
+                obj._sideB = sideC*Math.Sin(ToRadian(angleTwo))/Math.Sin(ToRadian(angleThree));
             }
             else
             {
                 throw new ArgumentException("Invalid angle!");
             }
+            return obj;
         }
 
-        private bool CheckAngle(double[] angles)
+        public static bool CheckAngle(double[] angles)
         {
             var sumAngles = 0.0;
 
@@ -116,12 +89,12 @@ namespace Program
             return sumAngles < 180;
         }
 
-        public bool CheckSide(double side)
+        public static bool CheckSide(double side)
         {
             return side > 0;
         }
 
-        private double ToRadian(double degrees) => degrees*Math.PI/180;
+        public static double ToRadian(double degrees) => degrees*Math.PI/180;
 
         public double CalculateArea()
         {
@@ -129,7 +102,7 @@ namespace Program
             return Math.Sqrt(p*(p - _sideA)*(p - _sideB)*(p - _sideC));
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
         }
     }

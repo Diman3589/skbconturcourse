@@ -10,8 +10,7 @@ namespace TriangleTests
         [TestMethod]
         public void CalculateArea_ValidThreeSides_EqualSix()
         {
-            var obj = new ThreeSides(3, 4, 5);
-            var triangle = new Triangle(obj);
+            var triangle =  Triangle.ThreeSides(3, 4, 5);
 
             var result = triangle.CalculateArea();
             result = Math.Round(result, 2);
@@ -22,8 +21,7 @@ namespace TriangleTests
         [TestMethod]
         public void CalculateArea_ValidTwoSidesAndAngle_EqualTwentyFour()
         {
-            var obj = new TwoSidesAndAngle(6, 8, 90);
-            var triangle = new Triangle(obj);
+            var triangle = Triangle.TwoSidesAndAngle(6, 8, 90);
 
             var result = triangle.CalculateArea();
             result = Math.Round(result, 2);
@@ -34,8 +32,7 @@ namespace TriangleTests
         [TestMethod]
         public void CalculateArea_ValidOneSideAndTwoAngles_EqualTwentyOneDotSixtyFive()
         {
-            var obj = new OneSideAndTwoAngles(10, 60, 30);
-            var triangle = new Triangle(obj);
+            var triangle = Triangle.OneSideAndTwoAngles(10, 60, 30);
 
             var result = triangle.CalculateArea();
             result = Math.Round(result, 2);
@@ -47,41 +44,35 @@ namespace TriangleTests
         [ExpectedException(typeof(ArgumentException))]
         public void CheckSide_InvalidSideThreeSides_ThrowArgumentException()
         {
-            var obj = new ThreeSides(-5, 4, -2);
-            new Triangle(obj);
+            Triangle.ThreeSides(-5, 4, -2);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void CheckAngle_InvalidAngleTwoSidesAndAngle_ThrowArgumentException()
         {
-            var obj = new TwoSidesAndAngle(5, 3, 900);
-            new Triangle(obj);
+            Triangle.TwoSidesAndAngle(5, 3, 900);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void CheckSide_InvalidSideOneSideAndTwoAngles_ThrowArgumentException()
         {
-            var obj = new OneSideAndTwoAngles(-5, 12, 30);
-            new Triangle(obj);
+            Triangle.OneSideAndTwoAngles(-5, 12, 30);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void CheckAngle_InvalidAngleOneSideAndTwoAngles_ThrowArgumentException()
         {
-            var obj = new OneSideAndTwoAngles(13, 135, 80);
-            new Triangle(obj);
+            Triangle.OneSideAndTwoAngles(13, 135, 80);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void CheckSide_InvalidSideTwoSidesAndOneAngle_ThrowArgumentException()
         {
-            var obj = new TwoSidesAndAngle(0, 15, 60);
-            new Triangle(obj);
+            Triangle.TwoSidesAndAngle(0, 15, 60);
         }
-
     }
 }
