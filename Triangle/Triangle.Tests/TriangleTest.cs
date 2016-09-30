@@ -1,8 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Program;
 
-namespace TriangleTests
+namespace Triangle.Tests
 {
     [TestClass]
     public class TriangleTest
