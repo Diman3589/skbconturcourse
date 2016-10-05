@@ -250,3 +250,10 @@ ModelManifest.xml
 /Triangle/Triangle.Tests/Properties/AssemblyInfo.cs
 /Triangle/Triangle.Tests/Triangle.Tests.csproj
 /Triangle/Triangle.Tests/TriangleTests.csproj
+/MysticSquare/MysticSquare.sln
+/MysticSquare/MysticSquare/MysticSquare.csproj
+/MysticSquare/MysticSquare/App.config
+/MysticSquare/MysticSquare/Properties/AssemblyInfo.cs
+/MysticSquare/Game.Tests/Game.Tests.csproj
+/MysticSquare/Game.Tests/Properties/AssemblyInfo.cs
+/MysticSquare/Game.Tests/GameTests.csproj
