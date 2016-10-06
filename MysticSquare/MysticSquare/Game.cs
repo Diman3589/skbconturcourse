@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MysticSquare
 {
-    internal class Point
+    public struct Point
     {
         public int x;
         public int y;
-        public int value { get; set; }
     }
 
     public class Game
     {
-        internal List<Point> Square;
+        protected Point[] _arrayPoints;
+        protected int[,] _arrayValues;
+
+        public int this[int x, int y] => _arrayValues[x, y];
 
         public Game(params int[] squareElements)
         {
@@ -24,23 +25,24 @@ namespace MysticSquare
             }
 
             var lenghtElems = squareElements.Length;
-            int n;
+            double result = Math.Sqrt(lenghtElems);
+            bool isSquare = result%1 == 0;
 
-            if (lenghtElems == 4 || lenghtElems == 9 || lenghtElems == 16)
+            if (!isSquare)
             {
-                n = Convert.ToInt32(Math.Sqrt(lenghtElems));
+                throw new ArgumentException("Incorrect square");
             }
-            else
-            {
-                throw new ArgumentException("Incorrect params");
-            }
+
+            var n = Convert.ToInt32(Math.Sqrt(lenghtElems));
 
             if (!CheckParams(squareElements))
             {
                 throw new ArgumentException("Incorrect params");
             }
 
-            Square = new List<Point>();
+            _arrayPoints = new Point[squareElements.Length];
+            _arrayValues = new int[n, n];
+
             for (var i = 0; i < n; ++i)
                 for (var j = 0; j < n; ++j)
                 {
@@ -48,13 +50,22 @@ namespace MysticSquare
                     {
                         x = i,
                         y = j,
-                        value = squareElements[i*n + j]
                     };
-                    Square.Add(point);
+
+                    var squareElement = squareElements[i*n + j];
+                    _arrayValues[i, j] = squareElement;
+                    try
+                    {
+                        _arrayPoints[squareElement] = point;
+                    }
+                    catch (ArgumentException)
+                    {
+                        throw new ArgumentException("Incorrect elements");
+                    }
                 }
         }
 
-        private static bool CheckParams(int[] array)
+        protected bool CheckParams(int[] array)
         {
             if (array.Length == 0)
             {
@@ -69,72 +80,71 @@ namespace MysticSquare
                 }
             }
 
-            var quantityOfZero = 0;
-            foreach (var elem in array)
+            var negativeElement = array.SingleOrDefault(x => x < 0);
+            if (negativeElement != 0)
             {
-                if (elem < 0)
-                {
-                    throw new ArgumentException("Incorrect params");
-                }
-                if (elem == 0)
-                    quantityOfZero++;
-                if (quantityOfZero > 1)
-                    throw new ArgumentException("Incorrect params");
+                throw new ArgumentException("Incorrect params");
             }
+
+            var zeroElement = array.SingleOrDefault(x => x == 0);
+            if (zeroElement > 1)
+            {
+                throw new ArgumentException("Incorrect params");
+            }
+
             return true;
         }
 
-        private bool CheckValue(int value)
+        protected bool CheckValue(int value)
         {
             if (value < 0)
                 return false;
 
-            var obj = Square.FirstOrDefault(elem => elem.value == value);
-            if (obj == null)
+            if (value >= _arrayPoints.Length)
                 return false;
             return true;
         }
 
-        public int GetValue(params int[] coordinates)
-        {
-            if (!CheckParams(coordinates))
-                throw new ArgumentException("Incorrect coordinates");
-            return Square.FirstOrDefault(elem => elem.x == coordinates[0] && elem.y == coordinates[1]).value;
-        }
-
-        public int[] GetLocation(int value)
+        public Point GetLocation(int value)
         {
             if (!CheckValue(value))
                 throw new ArgumentException("Incorrect value");
-            var result = Square.FirstOrDefault(elem => elem.value == value);
-            return new[] {result.x, result.y};
+            return _arrayPoints[value];
         }
 
-        public void Shift(int value)
+        protected bool CheckShift(int value)
         {
-            if (!CheckValue(value))
-            {
-                throw new ArgumentException("Incoorect value");
-            }
-            var currentObj = Square.FirstOrDefault(elem => elem.value == value);
-            var zeroObj = Square.First(elem => elem.value == 0);
+            var currentObj = _arrayPoints[value];
+            var zeroObj = _arrayPoints[0];
 
             var x = Math.Abs(currentObj.x - zeroObj.x);
             var y = Math.Abs(currentObj.y - zeroObj.y);
-            if (x + y != 1)
+
+            return x + y == 1;
+        }
+
+        public virtual Game Shift(int value)
+        {
+            if (!CheckValue(value))
+            {
+                throw new ArgumentException("Incorrect value");
+            }
+            if (!CheckShift(value))
             {
                 throw new ArgumentException("Incorrect shift");
             }
-            var newIndex = Square.IndexOf(currentObj);
-            var oldIndex = Square.IndexOf(zeroObj);
-            if (newIndex == -1 || oldIndex == -1)
-            {
-                throw new ArgumentException("Incorrect indexes of elements");
-            }
-            var tmp = Square[oldIndex].value;
+            var currentObj = _arrayPoints[value];
+            var zeroObj = _arrayPoints[0];
 
-            Square[oldIndex].value = Square[newIndex].value;
-            Square[newIndex].value = tmp;
+            _arrayValues[currentObj.x, currentObj.y] = value;
+            _arrayValues[zeroObj.x, zeroObj.y] = 0;
+
+            _arrayPoints[value].x = zeroObj.x;
+            _arrayPoints[value].y = zeroObj.y;
+            _arrayPoints[0].x = currentObj.x;
+            _arrayPoints[0].y = currentObj.y;
+
+            return this;
         }
     }
 }
