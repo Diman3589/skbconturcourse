@@ -136,8 +136,8 @@ namespace MysticSquare
             var currentObj = _arrayPoints[value];
             var zeroObj = _arrayPoints[0];
 
-            _arrayValues[currentObj.x, currentObj.y] = value;
-            _arrayValues[zeroObj.x, zeroObj.y] = 0;
+            _arrayValues[currentObj.x, currentObj.y] = 0;
+            _arrayValues[zeroObj.x, zeroObj.y] = value;
 
             _arrayPoints[value].x = zeroObj.x;
             _arrayPoints[value].y = zeroObj.y;
@@ -145,6 +145,12 @@ namespace MysticSquare
             _arrayPoints[0].y = currentObj.y;
 
             return this;
+        }
+
+        public Game(Game obj)
+        {
+            _arrayPoints = (Point[]) obj._arrayPoints.Clone();
+            _arrayValues = (int[,]) obj._arrayValues.Clone();
         }
     }
 }

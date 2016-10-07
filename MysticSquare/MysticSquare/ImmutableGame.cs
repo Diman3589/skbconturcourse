@@ -8,14 +8,8 @@ namespace MysticSquare
         {
         }
 
-        private ImmutableGame(ImmutableGame obj)
+        public ImmutableGame(ImmutableGame obj) : base(obj)
         {
-            _arrayPoints = new Point[obj._arrayPoints.Length];
-
-            var n = Convert.ToInt32(Math.Sqrt(obj._arrayValues.Length));
-            _arrayValues = new int[n,n];
-            _arrayPoints = (Point[]) obj._arrayPoints.Clone();
-            _arrayValues = (int[,]) obj._arrayValues.Clone();
         }
 
         public override Game Shift(int value)

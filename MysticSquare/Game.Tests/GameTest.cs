@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MysticSquare;
 using Game = MysticSquare.Game;
 
 namespace GameTests
@@ -18,20 +17,28 @@ namespace GameTests
         {
             var obj = CreateGame(1, 3, 2, 0);
 
+            var oldPoint = obj.GetLocation(3);
+            var oldZeroPoint = obj.GetLocation(0);
+
             obj.Shift(3);
 
             var zeroPoint = obj.GetLocation(0);
-            var actualRes = new[] {0, 1};
+            var actualRes = new[] {oldZeroPoint.x, oldZeroPoint.y};
             var expectedRes = new[] {zeroPoint.x, zeroPoint.y};
 
             var point = obj.GetLocation(3);
             var expectedPointRes = new[] {point.x, point.y};
-            var actualPointRes = new[] {1, 1};
+            var actualPointRes = new[] {oldPoint.x, oldPoint.y};
 
-            Assert.IsTrue(actualRes[0] == expectedRes[0]
-                && actualRes[1] == expectedRes[1]
-                && expectedPointRes[0] == actualPointRes[0]
-                && expectedPointRes[1] == actualPointRes[1]);
+            Assert.IsTrue(actualPointRes[0] == expectedRes[0]
+                          && actualPointRes[1] == expectedRes[1]
+                          && expectedPointRes[0] == actualRes[0]
+                          && expectedPointRes[1] == actualRes[1]
+                          || actualPointRes[0] == expectedPointRes[0]
+                          && actualPointRes[1] == expectedPointRes[1]
+                          && expectedRes[0] == actualRes[0]
+                          && expectedRes[1] == actualRes[1]);
+;
 
         }
 
@@ -100,29 +107,4 @@ namespace GameTests
         }
     }
 
-    [TestClass]
-    public class ImmutableGameTest : GameTest
-    {
-        protected override Game CreateGame(params int[] elements)
-        {
-            return new ImmutableGame(elements);
-        }
-
-        [TestMethod]
-        public void ImmutableShift_NeighborValue_ImmutableObject()
-        {
-            Game game = CreateGame(1, 2, 3, 4, 5, 6, 7, 8, 0);
-            Game newGame = game.Shift(8);
-
-            var newPoint = newGame.GetLocation(8);
-            var newResult = new[] {newPoint.x, newPoint.y};
-
-            var oldPoint = game.GetLocation(8);
-            var oldResult = new[] {oldPoint.x, oldPoint.y};
-
-            Assert.IsTrue(newResult[0] == oldResult[0]
-                && newResult[1] != oldResult[1]);
-
-        }
-    }
 }
