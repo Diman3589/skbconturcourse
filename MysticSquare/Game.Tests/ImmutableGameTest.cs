@@ -13,20 +13,20 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void ImmutableShift_NeighborValue_ImmutableObject()
+        public override void Shift_NeighborValue_CorrectlyShift()
         {
-            Game game = CreateGame(1, 2, 3, 4, 5, 6, 7, 8, 0);
-            Game newGame = game.Shift(8);
+            var obj = CreateGame(1, 3, 2, 0);
 
-            var newPoint = newGame.GetLocation(8);
-            var newResult = new[] {newPoint.x, newPoint.y};
+            var oldPoint = obj.GetLocation(3);
+            var oldZeroPoint = obj.GetLocation(0);
 
-            var oldPoint = game.GetLocation(8);
-            var oldResult = new[] {oldPoint.x, oldPoint.y};
+            obj.Shift(3);
 
-            Assert.IsTrue(newResult[0] == oldResult[0]
-                && newResult[1] != oldResult[1]);
+            var zeroPoint = obj.GetLocation(0);
+            var point = obj.GetLocation(3);
 
+            Assert.AreEqual(point, oldPoint);
+            Assert.AreEqual(oldZeroPoint, zeroPoint);
         }
     }
 }

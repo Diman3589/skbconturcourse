@@ -5,8 +5,8 @@ namespace MysticSquare
 {
     public struct Point
     {
-        public int x;
-        public int y;
+        public int X;
+        public int Y;
     }
 
     public class Game
@@ -25,15 +25,15 @@ namespace MysticSquare
             }
 
             var lenghtElems = squareElements.Length;
-            double result = Math.Sqrt(lenghtElems);
-            bool isSquare = result%1 == 0;
+            var result = Math.Sqrt(lenghtElems);
+            var isSquare = result%1 == 0;
 
             if (!isSquare)
             {
                 throw new ArgumentException("Incorrect square");
             }
 
-            var n = Convert.ToInt32(Math.Sqrt(lenghtElems));
+            var sizeSquare = Convert.ToInt32(Math.Sqrt(lenghtElems));
 
             if (!CheckParams(squareElements))
             {
@@ -41,18 +41,18 @@ namespace MysticSquare
             }
 
             _arrayPoints = new Point[squareElements.Length];
-            _arrayValues = new int[n, n];
+            _arrayValues = new int[sizeSquare, sizeSquare];
 
-            for (var i = 0; i < n; ++i)
-                for (var j = 0; j < n; ++j)
+            for (var i = 0; i < sizeSquare; ++i)
+                for (var j = 0; j < sizeSquare; ++j)
                 {
                     var point = new Point
                     {
-                        x = i,
-                        y = j,
+                        X = i,
+                        Y = j,
                     };
 
-                    var squareElement = squareElements[i*n + j];
+                    var squareElement = squareElements[i*sizeSquare + j];
                     _arrayValues[i, j] = squareElement;
                     try
                     {
@@ -117,8 +117,8 @@ namespace MysticSquare
             var currentObj = _arrayPoints[value];
             var zeroObj = _arrayPoints[0];
 
-            var x = Math.Abs(currentObj.x - zeroObj.x);
-            var y = Math.Abs(currentObj.y - zeroObj.y);
+            var x = Math.Abs(currentObj.X - zeroObj.X);
+            var y = Math.Abs(currentObj.Y - zeroObj.Y);
 
             return x + y == 1;
         }
@@ -136,13 +136,13 @@ namespace MysticSquare
             var currentObj = _arrayPoints[value];
             var zeroObj = _arrayPoints[0];
 
-            _arrayValues[currentObj.x, currentObj.y] = 0;
-            _arrayValues[zeroObj.x, zeroObj.y] = value;
+            _arrayValues[currentObj.X, currentObj.Y] = 0;
+            _arrayValues[zeroObj.X, zeroObj.Y] = value;
 
-            _arrayPoints[value].x = zeroObj.x;
-            _arrayPoints[value].y = zeroObj.y;
-            _arrayPoints[0].x = currentObj.x;
-            _arrayPoints[0].y = currentObj.y;
+            _arrayPoints[value].X = zeroObj.X;
+            _arrayPoints[value].Y = zeroObj.Y;
+            _arrayPoints[0].X = currentObj.X;
+            _arrayPoints[0].Y = currentObj.Y;
 
             return this;
         }

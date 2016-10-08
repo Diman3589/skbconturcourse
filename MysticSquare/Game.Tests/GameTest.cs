@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MysticSquare;
 using Game = MysticSquare.Game;
 
 namespace GameTests
@@ -13,7 +14,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Shift_NeighborValue_CorrectlyShift()
+        public virtual void Shift_NeighborValue_CorrectlyShift()
         {
             var obj = CreateGame(1, 3, 2, 0);
 
@@ -23,23 +24,10 @@ namespace GameTests
             obj.Shift(3);
 
             var zeroPoint = obj.GetLocation(0);
-            var actualRes = new[] {oldZeroPoint.x, oldZeroPoint.y};
-            var expectedRes = new[] {zeroPoint.x, zeroPoint.y};
-
             var point = obj.GetLocation(3);
-            var expectedPointRes = new[] {point.x, point.y};
-            var actualPointRes = new[] {oldPoint.x, oldPoint.y};
 
-            Assert.IsTrue(actualPointRes[0] == expectedRes[0]
-                          && actualPointRes[1] == expectedRes[1]
-                          && expectedPointRes[0] == actualRes[0]
-                          && expectedPointRes[1] == actualRes[1]
-                          || actualPointRes[0] == expectedPointRes[0]
-                          && actualPointRes[1] == expectedPointRes[1]
-                          && expectedRes[0] == actualRes[0]
-                          && expectedRes[1] == actualRes[1]);
-;
-
+            Assert.AreEqual(oldPoint, zeroPoint);
+            Assert.AreEqual(point, oldZeroPoint);
         }
 
         [TestMethod]
@@ -77,10 +65,9 @@ namespace GameTests
             var obj = new Game(1, 2, 5, 4, 6, 7, 3, 8, 0);
             var point = obj.GetLocation(4);
 
-            var expectedCoords = new[] {point.x, point.y};
-            var actualCoords = new[] {1, 0};
+            var expectedPoint = new Point {X = 1, Y = 0};
 
-            CollectionAssert.AreEqual(expectedCoords, actualCoords);
+            Assert.AreEqual(expectedPoint, point);
         }
 
         [TestMethod]
