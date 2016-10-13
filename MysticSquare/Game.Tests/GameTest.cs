@@ -32,7 +32,7 @@ namespace GameTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Shift_NotNeighborValue_CorrectlyShift()
+        public void Shift_NotNeighborValue_IncorrectShiftException()
         {
             var obj = CreateGame(1, 3, 2, 0);
             obj.Shift(1);

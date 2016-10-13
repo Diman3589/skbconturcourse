@@ -2,7 +2,7 @@
 
 namespace MysticSquare
 {
-    public class GameDecorator
+    public class GameDecorator : Game
     {
         public Game _firstGame { get; }
         private Game _currentGame;
