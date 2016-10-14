@@ -26,6 +26,6 @@
         public int Armor { get; }
         public double ReloadingTime { get; }
 
-        public void Execute(Player player) { }
+        public void Execute(Player sourcePlayer, Player destinationPlayer) { }
     }
 }
