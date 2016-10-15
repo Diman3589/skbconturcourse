@@ -2,7 +2,7 @@
 
 namespace Warcraft
 {
-    class Game
+    public class Game
     {
         private List<Player> _players;
 

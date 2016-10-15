@@ -2,8 +2,7 @@
 
 namespace Warcraft
 {
-
-    class Player
+    public class Player
     {
         public Player(string name)
         {
@@ -21,6 +20,6 @@ namespace Warcraft
         public double ManaRegenrationTime { get; set; }
 
         public List<Incantation> OurIncantations;
-        public List<Incantation> EnemyIncantations;
+        public List<Incantation> ImposedIncantations;
     }
 }
