@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1">
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
   <Class Name="Warcraft.Game">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="3.5" Width="9" />
     <TypeIdentifier>
       <HashCode>AAAAAAEAAAAAAAAAAAEAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Game.cs</FileName>
@@ -11,28 +11,33 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Warcraft.Incantation">
-    <Position X="7.25" Y="0.5" Width="2" />
+    <Position X="6.75" Y="8.75" Width="12" />
     <TypeIdentifier>
       <HashCode>AAAACACAAAAAAAQAAAAAAAQAAABAAAAAEIAAYAAAACI=</HashCode>
       <FileName>Incantation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Warcraft.MultiplyIncantation">
-    <Position X="9" Y="4.75" Width="1.75" />
+    <Position X="13.75" Y="14.5" Width="12.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MultiplyIncantation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Warcraft.OneIncantation">
-    <Position X="6" Y="4.75" Width="1.5" />
+    <Position X="0.5" Y="14.5" Width="12.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>OneIncantation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Warcraft.Player">
-    <Position X="3.5" Y="0.5" Width="2" />
+    <Position X="11.25" Y="3.5" Width="3" />
+    <AssociationLine Name="OurIncantations" Type="Warcraft.Incantation">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-2.392" Y="0.118" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>BAAACACAAAAAAAAAAAAAAAQAAABAAAAJEIAAIAAAACA=</HashCode>
       <FileName>Player.cs</FileName>
