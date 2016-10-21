@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Generics
 {
@@ -24,31 +25,23 @@ namespace Generics
 
             if (!_invertedDbStorage.ContainsKey(typeof(T)))
             {
-                _invertedDbStorage.Add(typeof(T), new List<Guid> {guid});
+                _invertedDbStorage.Add(typeof(T), new List<Guid>());
             }
-            else
-            {
-                _invertedDbStorage[typeof(T)].Add(guid);
-            }
+            _invertedDbStorage[typeof(T)].Add(guid);
 
             return default(T);
         }
 
-        public List<KeyValuePair<Type, Guid>> GetKeyValuePair<T>()
+        public Dictionary<Guid, object> GetPairs<T>()
             where T : new()
         {
-            var result = new List<KeyValuePair<Type, Guid>>();
             if (!_invertedDbStorage.ContainsKey(typeof(T))) return null;
 
             var values = _invertedDbStorage[typeof(T)];
-            foreach (var guid in values)
-            {
-                result.Add(new KeyValuePair<Type, Guid> (typeof(T), guid));
-            }
-            return result;
+
+            return values.ToDictionary(guid => guid, guid => _dbStorage[guid]);
         }
 
         public object GetObject(Guid guid) => _dbStorage.ContainsKey(guid) ? _dbStorage[guid] : null;
     }
-
 }
