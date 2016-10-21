@@ -23,7 +23,8 @@ namespace Generics
 
             _dbStorage.Add(guid, obj);
 
-            if (!_invertedDbStorage.ContainsKey(typeof(T)))
+            List<Guid> guids;
+            if (!_invertedDbStorage.TryGetValue(typeof(T), out guids))
             {
                 _invertedDbStorage.Add(typeof(T), new List<Guid>());
             }
