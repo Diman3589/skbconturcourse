@@ -4,40 +4,27 @@ namespace Delegates
 {
     public class TransactionProcessor<TOperation, TRequest>
     {
-        private readonly Func<TRequest, TOperation> _registerDelegate;
-        private readonly Action<TOperation> _saveDelegate;
-        private readonly Func<TRequest, bool> _checkDelegate;
-
         public TransactionProcessor(Func<TRequest, bool> checkDel,
             Func<TRequest, TOperation> registerDel, Action<TOperation> saveDel)
         {
-            _registerDelegate = registerDel;
-            _saveDelegate = saveDel;
-            _checkDelegate = checkDel;
+            Check = checkDel;
+            Register = registerDel;
+            Save = saveDel;
         }
 
         public TOperation Process(TRequest request)
         {
-            if (!_checkDelegate(request))
+            if (!Check(request))
                 throw new ArgumentException();
-            var result = _registerDelegate(request);
-            _saveDelegate(result);
+            var result = Register(request);
+            Save(result);
             return result;
         }
 
-        protected bool Check(TRequest request)
-        {
-            return _checkDelegate(request);
-        }
+        protected Func<TRequest, bool> Check;
 
-        protected TOperation Register(TRequest request)
-        {
-            return _registerDelegate(request);
-        }
+        protected Func<TRequest, TOperation> Register;
 
-        protected void Save(TOperation transaction)
-        {
-            _saveDelegate(transaction);
-        }
+        protected Action<TOperation> Save;
     }
 }
