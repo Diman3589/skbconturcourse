@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Delegates
 {
@@ -7,12 +8,12 @@ namespace Delegates
     {
         private readonly List<Observer> _observers;
 
-        public int[,] Table { private set; get; }
+        public List<List<int>> Table { get; }
 
         public DataModel()
         {
             _observers = new List<Observer>();
-            Table = new int[0, 0];
+            Table = new List<List<int>>();
         }
 
         private void Notify(string changes)
@@ -41,27 +42,20 @@ namespace Delegates
 
         public void UnattacheObjserver(Observer obj) => _observers.Remove(obj);
 
-        private bool CheckIndex(int index, int dimensionIndex)
+        private bool CheckIndex(int index, bool rowOrColumn)
         {
-            var length = Table.GetLength(dimensionIndex);
-            return index > length - 1;
+            if (!rowOrColumn) return Table[0].Count >= index;
+            return Table.Count >= index;
         }
 
-        private void CopyTables(int[,] newTable)
+        private bool CheckCell(int rowIndex, int columnIndex)
         {
-            for (var i = 0; i < Table.GetLength(0); i++)
+            if (Table.Count < rowIndex && rowIndex < 0)
             {
-                for (var j = 0; j < Table.GetLength(1); j++)
-                {
-                    newTable[i, j] = Table[i, j];
-                }
+                return false;
             }
-            Table = newTable;
+            return Table[0].Count > columnIndex;
         }
-
-
-        private bool CheckCell(int rowIndex, int columnIndex) =>
-            rowIndex <= Table.GetLength(0) && columnIndex <= Table.GetLength(1);
 
         public void Put(int row, int column, int value)
         {
@@ -69,31 +63,41 @@ namespace Delegates
             {
                 throw new ArgumentException("Cell not exist!");
             }
-            Table[row, column] = value;
+            Table[row][column] = value;
             Notify("Put");
         }
 
         public void InsertRow(int rowIndex)
         {
-            if (!CheckIndex(rowIndex, 0))
+            if (Table.Count > 0)
             {
-                throw new ArgumentException("Incorrect row index!");
+                if (!CheckIndex(rowIndex, true))
+                    throw new ArgumentException("Incorrect row index!");
+                Table.Add(new List<int>(new int[Table[0].Count]));
             }
-            var dimensionIndex = Table.GetLength(1);
-            var newTable = new int[rowIndex + 1, dimensionIndex];
-            CopyTables(newTable);
+            else
+            {
+                Table.Add(new List<int>());
+            }
+
             Notify("Insert row");
         }
 
         public void InsertColumn(int columnIndex)
         {
-            if (!CheckIndex(columnIndex, 1))
+            if (Table.Count > 0)
             {
-                throw new ArgumentException("Incorrect column index!");
+                if (!CheckIndex(columnIndex, false))
+                    throw new ArgumentException("Incorrect column index!");
             }
-            var dimensionIndex = Table.GetLength(0);
-            var newTable = new int[dimensionIndex, columnIndex + 1];
-            CopyTables(newTable);
+            else
+            {
+                Table.Add(new List<int>());
+            }
+            foreach (var row in Table)
+            {
+                row.Add(0);
+            }
             Notify("Insert column");
         }
 
@@ -104,7 +108,7 @@ namespace Delegates
                 throw new ArgumentException("Cell not exist!");
             }
             Notify("Get");
-            return Table[row, column];
+            return Table[row][column];
         }
     }
 }

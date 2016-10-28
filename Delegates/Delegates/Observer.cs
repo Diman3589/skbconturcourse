@@ -19,6 +19,5 @@ namespace Delegates
             OnGetDataHandler = getDataAction;
             dataModel.AttachObserver(this);
         }
-
     }
 }
