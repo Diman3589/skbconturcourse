@@ -15,7 +15,7 @@ namespace Delegates
             Table = new int[0, 0];
         }
 
-        public void Notify(string changes)
+        private void Notify(string changes)
         {
             foreach (var observer in _observers)
             {
