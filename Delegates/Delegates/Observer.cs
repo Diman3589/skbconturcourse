@@ -4,14 +4,21 @@ namespace Delegates
 {
     public class Observer
     {
-        public DataModel _model;
-        public Observer(Action updateAction, DataModel dataModel)
+        public Action<DataModel> OnInsertRowHalder;
+        public Action<DataModel> OnInsertColumnHandler;
+        public Action<DataModel> OnInsertDataHandler;
+        public Action<DataModel> OnGetDataHandler;
+
+        public Observer(DataModel dataModel, Action<DataModel> insertRowAction,
+            Action<DataModel> insertColumnAction, Action<DataModel> insertDataAction,
+            Action<DataModel> getDataAction)
         {
-            _model = dataModel;
-            Update = updateAction;
-            _model.AttachObserver(this);
+            OnInsertRowHalder = insertRowAction;
+            OnInsertColumnHandler = insertColumnAction;
+            OnInsertDataHandler = insertDataAction;
+            OnGetDataHandler = getDataAction;
+            dataModel.AttachObserver(this);
         }
 
-        public Action Update;
     }
 }

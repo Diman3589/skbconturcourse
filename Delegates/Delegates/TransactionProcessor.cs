@@ -27,5 +27,4 @@ namespace Delegates
 
         protected Action<TOperation> Save;
     }
-
 }
