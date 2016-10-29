@@ -16,23 +16,33 @@ namespace Delegates
             Table = new List<List<int>>();
         }
 
-        private void Notify(string changes, int rowIndex = 0, int colIndex = 0)
+        private void Notify(string methodCall, int rowIndex = 0, int colIndex = 0, int elem = 0)
         {
             foreach (var observer in _observers)
             {
-                switch (changes)
+                Dictionary<string, int> changesDictionary;
+                switch (methodCall)
                 {
                     case "Put":
-                        observer.OnInsertDataHandler(this, rowIndex, colIndex);
+                        changesDictionary = new Dictionary<string, int>
+                        {
+                            {"row", rowIndex},
+                            {"column", colIndex},
+                            {"data", elem}
+                        };
+                        observer.OnInsertDataHandler(this, changesDictionary);
                         break;
                     case "Insert row":
-                        observer.OnInsertRowHalder(this, rowIndex);
+                        changesDictionary = new Dictionary<string, int> {{"row", rowIndex}};
+                        observer.OnInsertRowHalder(this, changesDictionary);
                         break;
                     case "Insert column":
-                        observer.OnInsertColumnHandler(this, colIndex);
+                        changesDictionary = new Dictionary<string, int> {{"column", colIndex}};
+                        observer.OnInsertColumnHandler(this, changesDictionary);
                         break;
                     case "Get":
-                        observer.OnGetDataHandler(this, rowIndex, colIndex);
+                        changesDictionary = new Dictionary<string, int> {{"row", rowIndex}, {"column", colIndex}};
+                        observer.OnGetDataHandler(this, changesDictionary);
                         break;
                 }
             }
