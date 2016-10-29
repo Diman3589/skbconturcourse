@@ -4,14 +4,16 @@ namespace Delegates
 {
     public class Observer
     {
-        public Action<DataModel> OnInsertRowHalder;
-        public Action<DataModel> OnInsertColumnHandler;
-        public Action<DataModel> OnInsertDataHandler;
-        public Action<DataModel> OnGetDataHandler;
+        public Action<DataModel, int> OnInsertRowHalder;
+        public Action<DataModel, int> OnInsertColumnHandler;
+        public Action<DataModel, int, int> OnInsertDataHandler;
+        public Action<DataModel, int, int> OnGetDataHandler;
 
-        public Observer(DataModel dataModel, Action<DataModel> insertRowAction,
-            Action<DataModel> insertColumnAction, Action<DataModel> insertDataAction,
-            Action<DataModel> getDataAction)
+        public Observer(DataModel dataModel, 
+            Action<DataModel, int> insertRowAction,
+            Action<DataModel, int> insertColumnAction,
+            Action<DataModel, int, int> insertDataAction,
+            Action<DataModel, int, int> getDataAction)
         {
             OnInsertRowHalder = insertRowAction;
             OnInsertColumnHandler = insertColumnAction;

@@ -16,23 +16,23 @@ namespace Delegates
             Table = new List<List<int>>();
         }
 
-        private void Notify(string changes)
+        private void Notify(string changes, int rowIndex = 0, int colIndex = 0)
         {
             foreach (var observer in _observers)
             {
                 switch (changes)
                 {
                     case "Put":
-                        observer.OnInsertDataHandler(this);
+                        observer.OnInsertDataHandler(this, rowIndex, colIndex);
                         break;
                     case "Insert row":
-                        observer.OnInsertRowHalder(this);
+                        observer.OnInsertRowHalder(this, rowIndex);
                         break;
                     case "Insert column":
-                        observer.OnInsertColumnHandler(this);
+                        observer.OnInsertColumnHandler(this, colIndex);
                         break;
                     case "Get":
-                        observer.OnGetDataHandler(this);
+                        observer.OnGetDataHandler(this, rowIndex, colIndex);
                         break;
                 }
             }
@@ -64,7 +64,7 @@ namespace Delegates
                 throw new ArgumentException("Cell not exist!");
             }
             Table[row][column] = value;
-            Notify("Put");
+            Notify("Put", rowIndex: row, colIndex: column);
         }
 
         public void InsertRow(int rowIndex)
@@ -73,14 +73,14 @@ namespace Delegates
             {
                 if (!CheckIndex(rowIndex, true))
                     throw new ArgumentException("Incorrect row index!");
-                Table.Add(new List<int>(new int[Table[0].Count]));
+                Table.Insert(rowIndex, new List<int>(new int[Table[0].Count]));
             }
             else
             {
                 Table.Add(new List<int>());
             }
 
-            Notify("Insert row");
+            Notify("Insert row", rowIndex: rowIndex);
         }
 
         public void InsertColumn(int columnIndex)
@@ -96,9 +96,9 @@ namespace Delegates
             }
             foreach (var row in Table)
             {
-                row.Add(0);
+                row.Insert(columnIndex, 0);
             }
-            Notify("Insert column");
+            Notify("Insert column", colIndex: columnIndex);
         }
 
         public int Get(int row, int column)
@@ -107,7 +107,7 @@ namespace Delegates
             {
                 throw new ArgumentException("Cell not exist!");
             }
-            Notify("Get");
+            Notify("Get", rowIndex: row, colIndex: column);
             return Table[row][column];
         }
     }
