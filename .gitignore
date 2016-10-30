@@ -270,3 +270,14 @@ ModelManifest.xml
 /Delegates/Delegates.sln
 /Delegates/Delegates/ClassDiagram1.cd
 /Delegates/Delegates/ClassDiagram2.cd
+/Reflection/Application/Properties/AssemblyInfo.cs
+/Reflection/Application/saaas.cs
+/Reflection/Application/Application.csproj
+/Reflection/Plugin1/Properties/AssemblyInfo.cs
+/Reflection/Plugin1/Plugin1.csproj
+/Reflection/Plugin2/Properties/AssemblyInfo.cs
+/Reflection/Plugin2/Plugin2.csproj
+/Reflection/Reflection/Properties/AssemblyInfo.cs
+/Reflection/Reflection/Framework.csproj
+/Reflection/Framework/Framework.csproj
+/Reflection/Framework/Properties/AssemblyInfo.cs
