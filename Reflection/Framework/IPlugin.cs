@@ -1,4 +1,4 @@
-﻿namespace Reflection
+﻿namespace Framework
 {
     public interface IPlugin
     {

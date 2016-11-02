@@ -1,4 +1,4 @@
-﻿using Reflection;
+﻿using Framework;
 
 namespace Plugin1
 {
@@ -6,9 +6,6 @@ namespace Plugin1
     {
         public string Name { get; set; }
 
-        public Plugin1(string name)
-        {
-            Name = name;
-        }
+        public Plugin1() { }
     }
 }
