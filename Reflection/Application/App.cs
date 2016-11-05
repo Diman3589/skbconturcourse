@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Framework;
 
@@ -6,41 +8,43 @@ namespace Application
 {
     public class App
     {
-        private static IPlugin GetPlugin(string filename)
+        private static List<IPlugin> GetPlugins(string pathToDll)
         {
-            var assembly = Assembly.LoadFile(filename);
-
-            foreach (var type in assembly.GetTypes())
+            var plugins = new List<IPlugin>();
+            var files = Directory.GetFiles(pathToDll, "*.dll");
+            if (files.Length <= 0) return null;
+            foreach (var file in files)
             {
-                if (!type.IsClass || type.IsNotPublic) continue;
-                var interfaces = type.GetInterfaces();
-                foreach (var inter in interfaces)
+                var assembly = Assembly.LoadFile(file);
+
+                foreach (var type in assembly.GetTypes())
                 {
-                    if (!typeof(IPlugin).IsAssignableFrom(inter)) continue;
-                    var ctor = type.GetConstructor(new Type[] {});
-                    if (ctor != null)
+                    if (!type.IsClass || type.IsNotPublic) continue;
+                    var interfaces = type.GetInterfaces();
+                    foreach (var inter in interfaces)
                     {
-                        return (IPlugin) ctor.Invoke(new object[] {});
+                        if (!typeof(IPlugin).IsAssignableFrom(inter)) continue;
+                        var ctor = type.GetConstructor(new Type[] {});
+                        if (ctor == null) continue;
+                        var plugin = (IPlugin) ctor.Invoke(new object[] {});
+                        plugin.Name = type.Name;
+                        plugins.Add(plugin);
                     }
                 }
             }
-            return null;
+            return plugins.Count < 0 ? null : plugins;
         }
 
         public static void Main(string[] args)
         {
-            const string plugin1Dll =
-                "c:/users/Dmitry/Documents/Visual Studio 2015/Projects/Git/Reflection/Plugin1/bin/Debug/Plugin1.dll";
-            const string plugin2Dll =
-                "c:/users/Dmitry/Documents/Visual Studio 2015/Projects/Git/Reflection/Plugin2/bin/Debug/Plugin2.dll";
-            var plugin1Object = GetPlugin(plugin1Dll);
-            var plugin2Object = GetPlugin(plugin2Dll);
+            const string pluginsPath =
+                "c:/users/Dmitry/Documents/Visual Studio 2015/Projects/Git/Reflection/Plugins";
+            var allPlugins = GetPlugins(pluginsPath);
 
-            plugin1Object.Name = "Plugin1";
-            plugin2Object.Name = "Plugin2";
-
-            Console.WriteLine(plugin1Object.Name);
-            Console.WriteLine(plugin2Object.Name);
+            foreach (var plugin in allPlugins)
+            {
+                Console.WriteLine(plugin.Name);
+            }
             Console.ReadLine();
         }
     }
