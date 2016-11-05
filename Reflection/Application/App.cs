@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Framework;
 
@@ -21,9 +23,8 @@ namespace Application
                 {
                     if (!type.IsClass || type.IsNotPublic) continue;
                     var interfaces = type.GetInterfaces();
-                    foreach (var inter in interfaces)
+                    if (interfaces.Contains(typeof(IPlugin)))
                     {
-                        if (!typeof(IPlugin).IsAssignableFrom(inter)) continue;
                         var ctor = type.GetConstructor(new Type[] {});
                         if (ctor == null) continue;
                         var plugin = (IPlugin) ctor.Invoke(new object[] {});
@@ -45,6 +46,11 @@ namespace Application
             {
                 Console.WriteLine(plugin.Name);
             }
+
+            Expression<Func<double, double>> f = x => (10 + Math.Sin(x)) * x;
+            var g = Differentiator.Differentiate(f);
+            var compiled = g.Compile();
+            Console.WriteLine(compiled.Invoke(12));
             Console.ReadLine();
         }
     }
