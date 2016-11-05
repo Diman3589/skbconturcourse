@@ -38,7 +38,7 @@ namespace Application
         public static void Main(string[] args)
         {
             const string pluginsPath =
-                "c:/users/Dmitry/Documents/Visual Studio 2015/Projects/Git/Reflection/Plugins";
+                "c:/users/Dmitry/Documents/Visual Studio 2015/Projects/Git/Reflection/Solution";
             var allPlugins = GetPlugins(pluginsPath);
 
             foreach (var plugin in allPlugins)
