@@ -26,7 +26,6 @@ namespace MemoryControl
 
         public void Dispose()
         {
-            Console.WriteLine("Dispose call");
             _timer.Stop();
             ElapsedMilliseconds = _timer.ElapsedMilliseconds;
         }
