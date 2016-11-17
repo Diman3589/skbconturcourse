@@ -6,7 +6,7 @@ namespace MemoryControl
     public class Timer : IDisposable
     {
         private readonly Stopwatch _timer;
-        public long ElapsedMilliseconds;
+        public long ElapsedMilliseconds { get; private set; }
         public Timer()
         {
             _timer = new Stopwatch();
@@ -14,6 +14,7 @@ namespace MemoryControl
 
         public Timer Start()
         {
+            _timer.Reset();
             _timer.Start();
             return this;
         }
