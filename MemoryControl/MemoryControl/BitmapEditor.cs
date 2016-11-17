@@ -32,8 +32,6 @@ namespace MemoryControl
             var scan = _bmpData.Scan0 + y*_bmpData.Stride + x*3;
             var rgbValues = new byte[3];
 
-            Marshal.Copy(scan, rgbValues, 0, 3);
-
             rgbValues[0] = r;
             rgbValues[1] = g;
             rgbValues[2] = b;
